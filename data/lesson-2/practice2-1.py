@@ -1,4 +1,5 @@
 # Задание на закрепление знаний по модулю json
+
 """
 Есть файл orders в формате JSON с информацией о заказах. Написать скрипт, автоматизирующий его заполнение данными.
 Для этого:
@@ -9,4 +10,34 @@ orders.json. При записи данных указать величину о
 
 Проверить работу программы через вызов функции write_order_to_json() с передачей в нее значений каждого параметра.
 """
+
+import json
+
+
+def write_order_to_json():
+
+    item = input('Введите название товара: ')
+    quantity = input('Введите количество товара: ')
+    price = input('Введите цену товара: ')
+    buyer = input('Введите покупателя товара: ')
+    date = input('Введите дату: ')
+
+    dict_to_json = {
+        'item': item,
+        'quantity': quantity,
+        'price': price,
+        'buyer': buyer,
+        'date': date
+    }
+    # comma = ','
+
+    with open('orders.json', 'a', encoding='utf-8') as f:
+        # json.dump(comma, f)
+        json.dump(dict_to_json, f, indent=4)
+
+
+write_order_to_json()
+
+with open('orders.json', encoding='utf-8') as f:
+    print(f.read())
 
