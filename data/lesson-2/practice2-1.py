@@ -29,15 +29,13 @@ def write_order_to_json():
         'buyer': buyer,
         'date': date
     }
-    # comma = ','
 
-    with open('orders.json', 'a', encoding='utf-8') as f:
-        # json.dump(comma, f)
+    with open('orders.json', 'w', encoding='utf-8') as f:
         json.dump(dict_to_json, f, indent=4)
 
 
 write_order_to_json()
 
-with open('orders.json', encoding='utf-8') as f:
+with open('orders.json', 'r', encoding='utf-8') as f:
     print(f.read())
 
