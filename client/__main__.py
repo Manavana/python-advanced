@@ -17,7 +17,7 @@ args = parser.parse_args()
 # и переопределение констант
 if args.config:
     with open(args.config) as file:
-        conf = yaml.load(file)
+        conf = yaml.load(file, Loader=yaml.Loader)
         encoding = conf.get('encoding', ENCODING)
 
 try:
