@@ -106,3 +106,4 @@ venv.bak/
 
 workspace.code-workspace
 workspace.xml
+/.idea/workspace.xml
