@@ -105,3 +105,4 @@ venv.bak/
 .mypy_cache/
 
 workspace.code-workspace
+workspace.xml
