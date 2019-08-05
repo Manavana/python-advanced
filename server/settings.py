@@ -1,2 +1,4 @@
 HOST = 'localhost'
 PORT = 8000
+BUFFERSIZE = 1024
+ENCODIND = 'UTF-8'
