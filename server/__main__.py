@@ -29,6 +29,7 @@ if args.config:
         encoding = conf.get('encoding', ENCODING)
 
 try:
+    # устанавливаем сокет-соединение
     sock = socket.socket()
     sock.bind((host, port))
     sock.listen(5)
@@ -43,6 +44,8 @@ try:
         request = json.loads(b_data.decode(encoding))
         response = json.dumps(request)
         client.send(response.encode(encoding))
+
+        client.close()
 
 except KeyboardInterrupt:
     print('Server closed')
