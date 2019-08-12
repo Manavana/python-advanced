@@ -3,7 +3,16 @@ import socket
 import yaml
 import argparse
 
-from settings import HOST, PORT, BUFFERSIZE, ENCODIND
+from actions import (
+    resolve, get_server_actions
+)
+from protocol import (
+    validate_request, make_response, make_400,
+    make_404
+)
+from settings import (
+    HOST, PORT, BUFFERSIZE, ENCODIND
+)
 
 host = HOST
 port = PORT
@@ -32,7 +41,8 @@ try:
     # устанавливаем сокет-соединение
     sock = socket.socket()
     sock.bind((host, port))
-    sock.listen(5)
+    sock.listen(10)
+    server_actions = get_server_actions()
 
     print('Server started')
 
@@ -40,10 +50,30 @@ try:
         client, address = sock.accept()
         print(f'Client with address { address } was detected')
 
-        b_data = client.recv(buffersize)
-        request = json.loads(b_data.decode(encoding))
-        response = json.dumps(request)
-        client.send(response.encode(encoding))
+        b_request = client.recv(buffersize)
+        request = json.loads(b_request.decode(encoding))
+
+        action_name = request.get('action')
+
+        if validate_request(request):
+            controller = resolve(action_name, server_actions)
+            if controller:
+                try:
+                    response = controller(request)
+                except Exception as err:
+                    print(err)
+                    response = make_response(
+                        request, 500, 'Internal server error'
+                    )
+            else:
+                print(f'Action with name {action_name} does not exists')
+                response = make_404(request)
+        else:
+            print(f'Request is not valid')
+            response = make_400(request)
+
+        s_response = json.dumps(response)
+        client.send(s_response.encode(encoding))
 
         client.close()
 
